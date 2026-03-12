@@ -7,8 +7,8 @@
     <style>
         /* CSS to match image_1.png */
         body {
-            background-color: #121212;
-            color: white;
+            background-color: white;
+            color: black;
             font-family: Arial, sans-serif;
             margin: 0;
             padding-bottom: 100px; /* Space for fixed bottom nav */
@@ -62,18 +62,22 @@
         .status-tag { border: 1px solid #4CAF50; color: #4CAF50; border-radius: 12px; padding: 5px 12px; font-size: 14px; }
 
         /* Quick Actions grid */
-        .section-title { margin-bottom: 15px; color: white; font-size: 18px;}
+        .section-title { margin-bottom: 15px; color: black; font-size: 18px;}
         .actions-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 15px;
         }
         .action-item {
-            background-color: #1E1E1E;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             border-radius: 16px;
             padding: 20px;
             text-align: center;
-            color: white;
+            color: black;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -88,7 +92,7 @@
             align-items: center;
         }
         .info-label { color: #888; }
-        .info-value { font-weight: bold; color: white; }
+        .info-value { font-weight: bold; color: black; }
         .value-green { color: #4CAF50; }
 
         /* Fixed Bottom Navigation */
@@ -117,12 +121,12 @@
 
 .pill-nav {
     display: flex;
-    background: rgba(25, 25, 25, 0.9); /* Dark background */
+    background: rgba(25, 25, 25, 0.6); /* Dark background */
     backdrop-filter: blur(10px); /* Blurs content behind the bar */
     padding: 10px 20px;
     border-radius: 50px; /* Makes it a pill shape */
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     width: 90%;
     max-width: 400px;
     justify-content: space-around;
