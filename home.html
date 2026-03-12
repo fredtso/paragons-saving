@@ -153,7 +153,7 @@
                 <div class="info-value value-green">Active</div>
             </div>
             <div class="info-row">
-                <div class="info-label">Member Since</div>
+                <div class="info-label">Latest transaction</div>
                 <div class="info-value">Feb 2026</div>
             </div>
         </div>
@@ -193,7 +193,7 @@
         
         const infoValues = document.querySelectorAll('.info-value');
         if (infoValues[2]) {
-            infoValues[2].innerText = latestData.MemberSince || "Unknown";
+            infoValues[2].innerText = latestData.Date || "Unknown";
         }
     }
 
@@ -201,7 +201,7 @@
     function sendWithdrawRequest() {
         const name = document.querySelector('.user-name').innerText;
         const balance = document.querySelector('.balance-amount').innerText;
-        const phone = "256XXXXXXXXX"; // <-- PUT YOUR REAL WHATSAPP NUMBER HERE
+        const phone = "256783372449" //WHATSAPP NUMBER 
         
         const message = `Hello, I'm ${name}. I want to withdraw ${balance} from my account.`;
         const encodedMessage = encodeURIComponent(message);
