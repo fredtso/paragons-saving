@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ParagonsSaving - Home</title>
     <style>
-        /* CSS to match image_1.png */
+        /* CSS for the body */
         body {
             background-color: white;
             color: black;
@@ -121,13 +121,13 @@
 
 .pill-nav {
     display: flex;
-    background: rgba(250, 250, 255, 0.6); /* light background */
+    background: rgba(25, 25, 25, 0.6); /* Dark background */
     backdrop-filter: blur(10px); /* Blurs content behind the bar */
     padding: 10px 20px;
     border-radius: 50px; /* Makes it a pill shape */
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    width: 80%;
+    width: 90%;
     max-width: 400px;
     justify-content: space-around;
     align-items: center;
@@ -137,7 +137,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: black;
+    color: #888;
     text-decoration: none;
     font-size: 12px;
     transition: 0.3s;
@@ -158,7 +158,7 @@
 }
 
 
-        .nav-item { text-align: center; color: black; font-size: 12px; flex: 1; }
+        .nav-item { text-align: center; color: #888; font-size: 12px; flex: 1; }
         .nav-item-active { color: #FFD700; }
         .nav-icon { font-size: 24px; margin-bottom: 5px; }
       #statementModal {
@@ -188,7 +188,13 @@
                 <div class="welcome-tag">Welcome back,</div>
                 <h1 class="user-name">Fredfred</h1>
             </div>
-            <div class="header-icon">🔧</div>
+            <div class="container" style="margin-top: 20px;">
+    <button onclick="document.getElementById('passwordModal').style.display='block'" 
+            style="width: 100%; padding: 12px; background: #333; color: #FFD700; border: 1px solid #FFD700; border-radius: 12px; font-weight: bold; cursor: pointer;">
+        🔐
+    </button>
+</div>
+
         </header>
 
         <div class="card">
@@ -241,26 +247,6 @@
 </div>
 
 
- <!--  
-
-</div>
-
-    <nav class="bottom-nav">
-        <div class="nav-item nav-item-active">
-            <div class="nav-icon">🏠</div>
-            Home
-        </div>
-        <div class="nav-item">
-            <div class="nav-icon">📋</div>
-            Transactions
-        </div>
-        <div class="nav-item" onclick="logOut()" style="cursor: pointer;">
-    <div class="nav-icon">👤</div>
-    Log Out
-</div>
-
-
--->
 
 <div class="nav-wrapper">
     <nav class="pill-nav">
@@ -344,7 +330,44 @@ if (!localStorage.getItem('userData')) {
         modal.style.display = 'block';
     }
 
-   
+   function updatePassword() {
+    const newPassword = document.getElementById('newPassInput').value.trim();
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const btn = event.target;
+
+    if (!newPassword || newPassword.length < 4) {
+        return alert("Please enter at least 4 characters.");
+    }
+
+    btn.innerText = "Updating...";
+    btn.disabled = true;
+
+    // We send a POST request to your Apps Script
+    fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Essential for Google Apps Script POST requests
+        cache: 'no-cache',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email: userData.EMAIL || userData.Email || userData.email,
+            newPassword: newPassword
+        })
+    })
+    .then(() => {
+        // Since 'no-cors' doesn't return a readable response, we assume success
+        // if the fetch doesn't throw an error.
+        alert("Password update request sent! Please log in again with your new password.");
+        localStorage.clear();
+        window.location.href = "index.html";
+    })
+    .catch(err => {
+        console.error("Update failed:", err);
+        alert("Something went wrong. Try again.");
+        btn.innerText = "Save Password";
+        btn.disabled = false;
+    });
+}
+
 
 function logOut() {
     // Confirm first so they don't click it by accident
@@ -397,6 +420,27 @@ function updatePassword() {
     <table id="statementTable" style="width:100%; border-collapse: collapse; color:white; font-size:14px;">
         </table>
 </div>
+
+<div id="passwordModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; display: flex; align-items: center; justify-content: center;">
+    <div style="background: #1e1e1e; width: 90%; max-width: 400px; padding: 30px; border-radius: 20px; border: 1px solid #333; position: relative; margin: auto; top: 20%;">
+        <h2 style="color:white; margin-top: 0;">Update Password</h2>
+        <p style="color: #888; font-size: 14px;">Keep it simple so you don't forget it!</p>
+        
+        <input type="password" id="newPassInput" placeholder="Enter new password" 
+               style="width:100%; padding: 15px; margin: 20px 0; border-radius: 10px; border: 1px solid #333; background: #111; color: white; box-sizing: border-box;">
+        
+        <button onclick="updatePassword()" 
+                style="width: 100%; padding: 15px; background: #FFD700; color: black; border: none; border-radius: 12px; font-weight: bold; cursor: pointer;">
+            Save Password
+        </button>
+        
+        <button onclick="document.getElementById('passwordModal').style.display='none'" 
+                style="width: 100%; padding: 10px; background: none; color: #f44336; border: none; margin-top: 10px; cursor: pointer;">
+            Cancel
+        </button>
+    </div>
+</div>
+
 
 </body>
 </html>
