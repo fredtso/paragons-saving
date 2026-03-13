@@ -3,476 +3,577 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ParagonsSaving - Home</title>
+    <title>Paragons Saving — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* CSS for the body */
+        :root {
+            --bg-gradient: linear-gradient(150deg, #0a0a0f 0%, #12121f 60%, #1e1e3a 100%);
+            --accent-color: #a78bfa;
+            --accent-dark: #7c3aed;
+            --text-color: #e2e8f0;
+            --text-muted: rgba(255,255,255,0.45);
+            --card-bg: rgba(255,255,255,0.058);
+            --card-border: rgba(255,255,255,0.10);
+            --card-shadow: 0 16px 48px rgba(0,0,0,0.45);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: white;
-            color: black;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding-bottom: 100px; /* Space for fixed bottom nav */
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            transition: background 1.5s ease;
+            padding-bottom: 100px;
+            position: relative;
         }
-
-        .container {
-            padding: 20px;
-        }
-
-        .top-div{display: flex;
-    background: rgba(250, 250, 250, 0.6); /* Dark background */
-    backdrop-filter: blur(10px); /* Blurs content behind the bar */
-    padding: 10px 20px;
-    border-radius: 50px; /* Makes it a pill shape */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    width: 70%;
-    align-items: center;}
-
-        /* Header section with top right wrench icon */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        /* .header-text { } */
-        .welcome-tag { color: #888; font-size: 16px; margin-bottom: 5px; }
-        .user-name { font-size: 28px; font-weight: bold; margin: 0; }
-
-        .header-icon {
-            background-color: #6C63FF; /* Purple from your screenshot */
-            border-radius: 50%;
-            padding: 10px;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Card styles used for all section blocks */
-        .card {
-            color: black;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-        }
-
-        /* Total Balance Card (First main block) */
-        .balance-label { color: #888; font-size: 16px; }
-        .balance-amount { font-size: 40px; font-weight: bold; margin: 10px 0; }
-        .account-details { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; border-top: 1px solid #333; padding-top: 20px;}
-        .account-num-label { color: #888; margin-bottom: 5px;}
-        .account-num { font-weight: bold; color: white;}
-        .status-tag { border: 1px solid #4CAF50; color: #4CAF50; border-radius: 12px; padding: 5px 12px; font-size: 14px; }
-
-        /* Quick Actions grid */
-        .section-title { margin-bottom: 15px; color: black; font-size: 18px;}
-        .actions-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .action-item {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            color: black;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .action-icon-wrapper { color: #FFD700; font-size: 30px; margin-bottom: 15px;}
-
-        /* Account Info Section */
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        .info-label { color: #888; }
-        .info-value { font-weight: bold; color: black; }
-        .value-green { color: #4CAF50; }
-
-        /* Fixed Bottom Navigation */
-        .bottom-nav {
+        /* Ambient orb */
+        body::before {
+            content: '';
             position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #1E1E1E;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            border-top: 1px solid #333;
+            width: 500px; height: 500px;
+            background: var(--accent-color);
+            border-radius: 50%; filter: blur(130px);
+            opacity: 0.12; top: -200px; right: -100px;
+            pointer-events: none;
+            animation: driftOrb 18s ease-in-out infinite;
+        }
+        @keyframes driftOrb {
+            0%,100% { transform: translate(0,0); }
+            50%      { transform: translate(-40px, 50px); }
         }
 
-/* Container to center the floating bar */
-.nav-wrapper {
-    position: fixed;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    z-index: 1000;
-}
+        /* ===== SCROLL FADE IN ===== */
+        .fade-in { opacity: 0; transform: translateY(22px); transition: opacity 0.55s ease, transform 0.55s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-.pill-nav {
-    display: flex;
-    background: rgba(250, 250, 250, 0.6); /* Dark background */
-    backdrop-filter: blur(10px); /* Blurs content behind the bar */
-    padding: 10px 20px;
-    border-radius: 50px; /* Makes it a pill shape */
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    width: 90%;
-    max-width: 400px;
-    justify-content: space-around;
-    align-items: center;
-}
+        /* ===== CONTAINER ===== */
+        .container { max-width: 480px; margin: 0 auto; padding: 20px 18px; }
 
-.nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #888;
-    text-decoration: none;
-    font-size: 12px;
-    transition: 0.3s;
-    cursor: pointer;
-}
+        /* ===== HEADER ===== */
+        .header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 28px;
+            padding-top: 8px;
+        }
+        .welcome-tag { font-size: 13px; color: var(--text-muted); letter-spacing: 0.5px; }
+        .user-name   { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; margin-top: 2px; }
+        .time-chip {
+            background: var(--card-bg);
+            backdrop-filter: blur(14px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px; padding: 8px 14px;
+            font-size: 11px; font-weight: 600;
+            color: var(--accent-color);
+            letter-spacing: 1px; text-transform: uppercase;
+            white-space: nowrap;
+        }
 
-.nav-item.active {
-    color: #FFD700; /* Gold for the active tab */
-}
+        /* ===== BALANCE CARD ===== */
+        .balance-card {
+            background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent-color) 100%);
+            border-radius: 24px; padding: 28px;
+            margin-bottom: 24px; position: relative; overflow: hidden;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.4);
+        }
+        .balance-card::before {
+            content: '';
+            position: absolute; top: -60px; right: -60px;
+            width: 200px; height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        .balance-card::after {
+            content: '';
+            position: absolute; bottom: -40px; left: -40px;
+            width: 150px; height: 150px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 50%;
+        }
+        .balance-label { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); letter-spacing: 1px; text-transform: uppercase; }
+        .balance-amount { font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700; color: #fff; margin: 10px 0; line-height: 1; }
+        .balance-currency { font-size: 18px; font-weight: 400; opacity: 0.8; }
+        .account-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 22px; padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            position: relative; z-index: 1;
+        }
+        .acct-num-label { font-size: 11px; color: rgba(255,255,255,0.6); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+        .acct-num { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: 1px; }
+        .status-pill {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 20px; padding: 6px 14px;
+            font-size: 12px; font-weight: 600; color: #fff;
+            backdrop-filter: blur(8px);
+        }
 
-.nav-icon {
-    font-size: 20px;
-    margin-bottom: 4px;
-}
+        /* ===== SECTION TITLE ===== */
+        .section-title {
+            font-size: 16px; font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 14px; letter-spacing: 0.2px;
+        }
 
-.nav-item span {
-    font-weight: 500;
-}
+        /* ===== QUICK ACTIONS GRID ===== */
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin-bottom: 28px; }
+        .action-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border);
+            border-radius: 20px; padding: 22px 16px;
+            text-align: center; cursor: pointer;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            display: flex; flex-direction: column; align-items: center;
+        }
+        .action-item:hover { transform: translateY(-3px); box-shadow: var(--card-shadow); border-color: var(--accent-color); }
+        .action-item:active { transform: translateY(0); }
+        .action-emoji { font-size: 32px; margin-bottom: 12px; }
+        .action-label { font-size: 14px; font-weight: 600; color: var(--text-color); }
+        .action-sub   { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
 
+        /* ===== ACCOUNT INFO CARD ===== */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-radius: 22px; padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--card-shadow);
+        }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; }
+        .info-row + .info-row { border-top: 1px solid rgba(255,255,255,0.07); }
+        .info-label { font-size: 13px; color: var(--text-muted); }
+        .info-value { font-size: 14px; font-weight: 600; color: var(--text-color); }
+        .value-green { color: #4ade80; }
 
-        .nav-item { text-align: center; color: #888; font-size: 12px; flex: 1; }
-        .nav-item-active { color: #FFD700; }
-        .nav-icon { font-size: 24px; margin-bottom: 5px; }
-      #statementModal {
-    font-family: Arial, sans-serif;
-    animation: fadeIn 0.3s ease;
-}
+        /* ===== BOTTOM NAV ===== */
+        .nav-wrapper {
+            position: fixed; bottom: 18px; left: 0; right: 0;
+            display: flex; justify-content: center; z-index: 100;
+        }
+        .pill-nav {
+            display: flex;
+            background: rgba(18,18,30,0.88);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px; padding: 8px 16px;
+            gap: 8px; box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+            max-width: 380px; width: 88%;
+        }
+        .nav-item {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; color: rgba(255,255,255,0.38);
+            font-size: 11px; font-weight: 600;
+            text-decoration: none; cursor: pointer;
+            padding: 8px 4px; border-radius: 14px;
+            transition: all 0.2s ease; letter-spacing: 0.3px;
+        }
+        .nav-item:hover { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.06); }
+        .nav-item.active { color: var(--accent-color); }
+        .nav-icon { font-size: 20px; margin-bottom: 3px; }
 
-#statementTable {
-    background-color: #1e1e1e;
-    border-radius: 12px;
-    overflow: hidden;
-}
+        /* ===== MODALS ===== */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.85); z-index: 500;
+            align-items: flex-end; justify-content: center;
+            backdrop-filter: blur(6px);
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-sheet {
+            background: #13131f;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 28px 28px 0 0;
+            padding: 28px 24px 40px;
+            width: 100%; max-width: 480px;
+            animation: slideSheet 0.35s cubic-bezier(0.16,1,0.3,1) both;
+        }
+        @keyframes slideSheet {
+            from { transform: translateY(100%); }
+            to   { transform: translateY(0); }
+        }
+        .modal-handle {
+            width: 40px; height: 4px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 2px; margin: 0 auto 22px;
+        }
+        .modal-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+        .modal-sub   { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+        .modal-input {
+            width: 100%; padding: 14px 18px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 14px; color: var(--text-color);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px; outline: none; margin-bottom: 14px;
+        }
+        .modal-input:focus { border-color: var(--accent-color); background: rgba(255,255,255,0.1); }
+        .modal-input::placeholder { color: rgba(255,255,255,0.25); }
+        .modal-btn {
+            width: 100%; padding: 15px; border: none; border-radius: 15px;
+            font-family: 'DM Sans', sans-serif; font-size: 15px;
+            font-weight: 700; cursor: pointer; transition: all 0.22s ease;
+            margin-top: 4px;
+        }
+        .modal-btn.primary { background: var(--accent-color); color: #000; }
+        .modal-btn.primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+        .modal-btn.cancel  { background: transparent; color: #f87171; margin-top: 8px; font-size: 14px; }
+        .modal-btn:disabled { opacity: 0.55; cursor: not-allowed; }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        /* Statement modal */
+        .statement-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.92); z-index: 600;
+            overflow-y: auto; padding: 20px;
+            backdrop-filter: blur(8px);
+        }
+        .statement-overlay.open { display: block; }
+        .statement-inner { max-width: 480px; margin: 0 auto; }
+        .statement-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; position: sticky; top: 0;
+            background: rgba(10,10,15,0.95); padding: 12px 0;
+            backdrop-filter: blur(12px);
+        }
+        .statement-title { font-family: 'Playfair Display', serif; font-size: 20px; }
+        .close-btn {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: var(--text-color); border-radius: 12px;
+            padding: 8px 16px; cursor: pointer;
+            font-family: 'DM Sans', sans-serif; font-size: 13px;
+            transition: background 0.2s ease;
+        }
+        .close-btn:hover { background: rgba(255,255,255,0.14); }
+        .stmt-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .stmt-table th { padding: 10px 12px; text-align: left; color: var(--accent-color); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .stmt-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+        .stmt-table tr:last-child td { border-bottom: none; }
+        .stmt-table tr:hover td { background: rgba(255,255,255,0.03); }
+        .td-green { color: #4ade80; font-weight: 600; }
+        .td-red   { color: #f87171; font-weight: 600; }
+        .td-bold  { font-weight: 700; }
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px; }
 
-
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 90px; left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: rgba(18,18,30,0.97);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; padding: 13px 22px;
+            font-size: 14px; font-weight: 500; z-index: 1000;
+            transition: transform 0.35s cubic-bezier(0.16,1,0.3,1);
+            max-width: 340px; text-align: center;
+            backdrop-filter: blur(20px); pointer-events: none;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.success { border-color: #4ade80; color: #4ade80; }
+        .toast.error   { border-color: #f87171; color: #f87171; }
+        .toast.info    { border-color: var(--accent-color); color: var(--accent-color); }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <header>
-            <div class="header-text top-div">
-                <div class="welcome-tag">Welcome back,</div>
-                <h1 class="user-name">Fredfred</h1>
+        <!-- HEADER -->
+        <header class="header fade-in">
+            <div>
+                <div class="welcome-tag" id="welcomeTag">Welcome back,</div>
+                <h1 class="user-name" id="userName">Loading…</h1>
             </div>
-          <div id="passwordModal">👤
-    <div class="modal-content">
-        <button onclick="updatePassword()">SAVE</button>
-        <button onclick="closePasswordModal()" style="color: red; background: none; border: none; margin-top: 10px; cursor: pointer;">Cancel</button>
-    </div>
-</div>
-
+            <div class="time-chip" id="timeChip">🌙 Night</div>
         </header>
 
-        <div class="card">
+        <!-- BALANCE CARD -->
+        <div class="balance-card fade-in">
             <div class="balance-label">Total Balance</div>
-            <div class="balance-amount">Ugx5420.50</div>
-
-            <div class="account-details">
+            <div class="balance-amount"><span class="balance-currency">UGX </span><span id="balanceAmount">0.00</span></div>
+            <div class="account-row">
                 <div>
-                    <div class="account-num-label">Account Number</div>
-                    <div class="account-num">SB841053108</div>
+                    <div class="acct-num-label">Account Number</div>
+                    <div class="acct-num" id="accountNum">—</div>
                 </div>
-                <div class="status-tag">✓ Active</div>
+                <div class="status-pill">✓ Active</div>
             </div>
         </div>
 
-        <h2 class="section-title">Quick Actions</h2>
-        <div class="actions-grid">
-            <div class="action-item" onclick="sendWithdrawRequest()" style="cursor: pointer;">
-    <div class="action-icon-wrapper">➤</div>
-    Withdraw
-</div>
-        
-        <div class="action-item" onclick="showStatement()" style="cursor: pointer;">
-    <div class="action-icon-wrapper">📋</div>
-    Statement
-</div>
-
+        <!-- QUICK ACTIONS -->
+        <div class="section-title fade-in">Quick Actions</div>
+        <div class="actions-grid fade-in">
+            <div class="action-item" onclick="sendWithdrawRequest()">
+                <div class="action-emoji">💸</div>
+                <div class="action-label">Withdraw</div>
+                <div class="action-sub">via WhatsApp</div>
+            </div>
+            <div class="action-item" onclick="showStatement()">
+                <div class="action-emoji">📋</div>
+                <div class="action-label">Statement</div>
+                <div class="action-sub">View history</div>
+            </div>
+            <div class="action-item" onclick="openPasswordModal()">
+                <div class="action-emoji">🔐</div>
+                <div class="action-label">Password</div>
+                <div class="action-sub">Update security</div>
+            </div>
+            <div class="action-item" onclick="handleLogout()">
+                <div class="action-emoji">🚪</div>
+                <div class="action-label">Log Out</div>
+                <div class="action-sub">Sign out safely</div>
+            </div>
         </div>
 
-        <h2 class="section-title" style="margin-top:25px;">Account Information</h2>
-        <div class="card">
+        <!-- ACCOUNT INFO -->
+        <div class="section-title fade-in">Account Details</div>
+        <div class="card fade-in">
             <div class="info-row">
-                <div class="info-label">Account Type</div>
-                <div class="info-value">Savings Account</div>
+                <span class="info-label">Account Status</span>
+                <span class="info-value value-green">● Active</span>
             </div>
             <div class="info-row">
-                <div class="info-label">Status</div>
-                <div class="info-value value-green">Active</div>
+                <span class="info-label">Account Number</span>
+                <span class="info-value" id="acctNumDisplay">—</span>
             </div>
             <div class="info-row">
-                <div class="info-label">Latest transaction</div>
-                <div class="info-value">Feb 2026</div>
+                <span class="info-label">Last Transaction</span>
+                <span class="info-value" id="lastTransaction">—</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Total Deposits</span>
+                <span class="info-value value-green" id="totalDeposits">UGX 0</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Total Withdrawals</span>
+                <span class="info-value" id="totalWithdrawals">UGX 0</span>
             </div>
         </div>
-        <div id="passwordModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:2000; padding:20px; box-sizing:border-box;">
-    <h2 style="color:white;">Change Password</h2>
-    <input type="password" id="newPassInput" placeholder="Enter new password" style="width:100%; padding:15px; margin-bottom:10px; border-radius:8px; border:none;">
-    <button onclick="updatePassword()" style="width: 100%; padding: 15px; background: #FFD700; color: black; border: none; border-radius: 12px; font-weight: bold;">Save New Password</button>
-    <button onclick="document.getElementById('passwordModal').style.display='none'" style="width: 100%; padding: 10px; background: none; color: white; border: none; margin-top:10px;">Cancel</button>
-</div>
-
-
-
-<div class="nav-wrapper">
-    <nav class="pill-nav">
-        <div class="nav-item active" onclick="location.reload()">
-            <div class="nav-icon">🏠</div>
-            <span>Home</span>
-        </div>
-        <div class="nav-item" onclick="showStatement()">
-            <div class="nav-icon">📋</div>
-            <span>Statement</span>
-        </div>
-        <div class="nav-item" onclick="logOut()">
-            <div class="nav-icon">👤</div>
-            <span>Logout</span>
-        </div>
-    </nav>
-</div>
-
-
-        </div>
-    </nav>
-
-
-    
-  <script>
-
-if (!localStorage.getItem('userData')) {
-    window.location.href = "index.html";
-}
-
-
-    const latestData = JSON.parse(localStorage.getItem('userData'));
-    const allEntries = JSON.parse(localStorage.getItem('allEntries'));
-
-    if (!latestData) {
-        window.location.href = "index.html";
-    } else {
-        // Updates based on your specific Sheet headers
-        document.querySelector('.user-name').innerText = latestData.Name || "User";
-        document.querySelector('.balance-amount').innerText = "ugx" + (latestData.Balance || "0.00");
-        
-        // Use bracket notation for headers with spaces
-        document.querySelector('.account-num').innerText = latestData["Account Number"] || "N/A";
-        
-        const infoValues = document.querySelectorAll('.info-value');
-        if (infoValues[2]) {
-            // Pulls the date from the latest transaction
-            infoValues[2].innerText = latestData.Date || "March 2026";
-        }
-    }
-
-    function sendWithdrawRequest() {
-        const name = document.querySelector('.user-name').innerText;
-        const balance = document.querySelector('.balance-amount').innerText;
-        const phone = "256783372449";
-        const message = encodeURIComponent(`Hello, I'm ${name}. I want to withdraw ${balance} from my account.`);
-        window.location.href = `https://wa.me/${phone}?text=${message}`;
-    }
-
-    function showStatement() {
-        const modal = document.getElementById('statementModal');
-        const table = document.getElementById('statementTable');
-        if (!allEntries) return alert("No transactions found.");
-
-        let tableHTML = `<tr style="border-bottom: 2px solid #FFD700;">
-            <th style="padding:10px;">Date</th>
-            <th style="padding:10px;">Deposit</th>
-            <th style="padding:10px;">Withdraw</th>
-            <th style="padding:10px;">Balance</th>
-        </tr>`;
-
-        allEntries.forEach(row => {
-            tableHTML += `<tr>
-                <td style="padding:10px; border-bottom:1px solid #333;">${row.Date || ''}</td>
-                <td style="padding:10px; border-bottom:1px solid #333; color:#4CAF50;">${row.Deposit || 0}</td>
-                <td style="padding:10px; border-bottom:1px solid #333; color:#f44336;">${row.Withdraw || 0}</td>
-                <td style="padding:10px; border-bottom:1px solid #333; font-weight:bold;">${row.Balance || 0}</td>
-            </tr>`;
-        });
-        table.innerHTML = tableHTML;
-        modal.style.display = 'block';
-    }
-
-   function updatePassword() {
-    const newPassword = document.getElementById('newPassInput').value.trim();
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    const btn = event.target;
-
-    if (!newPassword || newPassword.length < 4) {
-        return alert("Please enter at least 4 characters.");
-    }
-
-    btn.innerText = "Updating...";
-    btn.disabled = true;
-
-    // We send a POST request to your Apps Script
-    fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Essential for Google Apps Script POST requests
-        cache: 'no-cache',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            email: userData.EMAIL || userData.Email || userData.email,
-            newPassword: newPassword
-        })
-    })
-    .then(() => {
-        // Since 'no-cors' doesn't return a readable response, we assume success
-        // if the fetch doesn't throw an error.
-        alert("Password update request sent! Please log in again with your new password.");
-        localStorage.clear();
-        window.location.href = "index.html";
-    })
-    .catch(err => {
-        console.error("Update failed:", err);
-        alert("Something went wrong. Try again.");
-        btn.innerText = "Save Password";
-        btn.disabled = false;
-    });
-}
-
-
-function logOut() {
-    // Confirm first so they don't click it by accident
-    if (confirm("Are you sure you want to log out?")) {
-        localStorage.clear(); // Deletes BRIAN's or FRED's data from the phone
-        window.location.href = "index.html"; // Returns to the login screen
-    }
-}
-
-// Function to close the modal
-function closePasswordModal() {
-    document.getElementById('passwordModal').style.display = 'none';
-}
-
-function updatePassword() {
-    const newPassword = document.getElementById('newPassInput').value.trim();
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    
-    // We target the specific button to show loading status
-    const btn = event.target;
-
-    if (!newPassword || newPassword.length < 4) {
-        return alert("Please enter at least 4 characters.");
-    }
-
-    btn.innerText = "Updating...";
-    btn.disabled = true;
-
-    // We use 'no-cors' because Google Scripts don't play nice with standard JSON POSTs
-    fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: userData.EMAIL || userData.Email,
-            newPassword: newPassword
-        })
-    })
-    .then(() => {
-        // Since no-cors doesn't let us read the result, we assume success 
-        // if the request actually goes through.
-        alert("Password updated! Please log in again.");
-        localStorage.clear();
-        window.location.href = "index.html";
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Network error. Try again.");
-        btn.innerText = "Save Password";
-        btn.disabled = false;
-    });
-}
-
-
-
-</script>
-
-
-
-<div id="statementModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:1000; overflow-y:auto; padding:20px; box-sizing:border-box;">
-    <button onclick="document.getElementById('statementModal').style.display='none'" style="background:#FFD700; border:none; padding:10px; border-radius:5px; margin-bottom:20px;">Close Statement</button>
-    <table id="statementTable" style="width:100%; border-collapse: collapse; color:white; font-size:14px;">
-        </table>
-</div>
-
-
-
-<div id="statementModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:1000; overflow-y:auto; padding:20px; box-sizing:border-box;">
-    <button onclick="document.getElementById('statementModal').style.display='none'" style="background:#FFD700; border:none; padding:10px; border-radius:5px; margin-bottom:20px;">Close Statement</button>
-    <table id="statementTable" style="width:100%; border-collapse: collapse; color:white; font-size:14px;">
-        </table>
-</div>
-
-<div id="passwordModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; align-items: center; justify-content: center;">
-    <div style="background: #1e1e1e; width: 90%; max-width: 400px; padding: 30px; border-radius: 20px; border: 1px solid #333; position: relative; margin: auto; top: 20%;">
-        <h2 style="color:white; margin-top: 0;">Update Password</h2>
-        <p style="color: #888; font-size: 14px;">Keep it simple so you don't forget it!</p>
-        
-        <input type="password" id="newPassInput" placeholder="Enter new password" 
-               style="width:100%; padding: 15px; margin: 20px 0; border-radius: 10px; border: 1px solid #333; background: #111; color: white; box-sizing: border-box;">
-        
-        <button onclick="updatePassword()" 
-                style="width: 100%; padding: 15px; background: #FFD700; color: black; border: none; border-radius: 12px; font-weight: bold; cursor: pointer;">
-            Save Password
-        </button>
-        
-        <button onclick="document.getElementById('passwordModal').style.display='none'" 
-                style="width: 100%; padding: 10px; background: none; color: #f44336; border: none; margin-top: 10px; cursor: pointer;">
-            Cancel
-        </button>
     </div>
-</div>
 
+    <!-- BOTTOM NAV -->
+    <div class="nav-wrapper">
+        <nav class="pill-nav">
+            <div class="nav-item active">
+                <div class="nav-icon">🏠</div>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="showStatement()">
+                <div class="nav-icon">📋</div>
+                <span>Statement</span>
+            </div>
+            <div class="nav-item" onclick="openPasswordModal()">
+                <div class="nav-icon">🔐</div>
+                <span>Security</span>
+            </div>
+            <div class="nav-item" onclick="handleLogout()">
+                <div class="nav-icon">🚪</div>
+                <span>Logout</span>
+            </div>
+        </nav>
+    </div>
 
+    <!-- PASSWORD MODAL (sheet) -->
+    <div class="modal-overlay" id="passwordModal" onclick="handleOverlayClick(event, 'passwordModal')">
+        <div class="modal-sheet">
+            <div class="modal-handle"></div>
+            <div class="modal-title">Update Password</div>
+            <div class="modal-sub">Choose something secure but memorable!</div>
+            <input type="password" class="modal-input" id="newPassInput" placeholder="Enter new password (min. 4 chars)">
+            <button class="modal-btn primary" id="savePassBtn" onclick="updatePassword()">Save New Password</button>
+            <button class="modal-btn cancel" onclick="closeModal('passwordModal')">Cancel</button>
+        </div>
+    </div>
+
+    <!-- STATEMENT MODAL -->
+    <div class="statement-overlay" id="statementModal">
+        <div class="statement-inner">
+            <div class="statement-header">
+                <div class="statement-title">Transaction History</div>
+                <button class="close-btn" onclick="closeModal('statementModal')">✕ Close</button>
+            </div>
+            <table class="stmt-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Deposit</th>
+                        <th>Withdraw</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody id="statementBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwcb1l8PVBeDkJYa51OX4geRgor4WneQYCFaOrGH5U77hfYDuxkM1IfRyp48xmdMFM/exec";
+
+        // ===== AUTH GUARD =====
+        const userData = JSON.parse(localStorage.getItem('userData'));
+        const allEntries = JSON.parse(localStorage.getItem('allEntries'));
+        if (!userData) window.location.href = 'index.html';
+
+        // ===== TIME-BASED THEMING =====
+        function applyTheme() {
+            const h = new Date().getHours();
+            const themes = [
+                { range:[5,8],  label:'🌅 Dawn',     bg:'linear-gradient(150deg,#1a0533 0%,#6b2d6b 60%,#e8845c 100%)', accent:'#f4a261', dark:'#c1440e', greet:'Good dawn' },
+                { range:[8,12], label:'☀️ Morning',   bg:'linear-gradient(150deg,#0f3460 0%,#16213e 60%,#1a6985 100%)', accent:'#4cc9f0', dark:'#0e7ea8', greet:'Good morning' },
+                { range:[12,17],label:'🌤 Afternoon', bg:'linear-gradient(150deg,#0d1b2a 0%,#1b4332 60%,#2d6a4f 100%)', accent:'#74c69d', dark:'#1e6d47', greet:'Good afternoon' },
+                { range:[17,20],label:'🌆 Evening',   bg:'linear-gradient(150deg,#1a1a2e 0%,#16213e 60%,#8b2252 100%)', accent:'#FFD700', dark:'#b8860b', greet:'Good evening' },
+                { range:[20,24],label:'🌙 Night',     bg:'linear-gradient(150deg,#0a0a0f 0%,#12121f 60%,#1e1e3a 100%)', accent:'#a78bfa', dark:'#7c3aed', greet:'Good night' },
+                { range:[0,5],  label:'🌙 Night',     bg:'linear-gradient(150deg,#0a0a0f 0%,#12121f 60%,#1e1e3a 100%)', accent:'#a78bfa', dark:'#7c3aed', greet:'Good night' },
+            ];
+            const t = themes.find(x => h >= x.range[0] && h < x.range[1]) || themes[4];
+            document.documentElement.style.setProperty('--bg-gradient', t.bg);
+            document.documentElement.style.setProperty('--accent-color', t.accent);
+            document.documentElement.style.setProperty('--accent-dark', t.dark);
+            document.getElementById('timeChip').textContent = t.label;
+            if (userData) {
+                const name = userData.Name || 'User';
+                const firstName = name.split(' ')[0];
+                document.getElementById('welcomeTag').textContent = `${t.greet},`;
+                document.getElementById('userName').textContent = name;
+            }
+        }
+        applyTheme();
+        setInterval(applyTheme, 5 * 60 * 1000);
+
+        // ===== POPULATE DATA =====
+        if (userData) {
+            document.getElementById('balanceAmount').textContent = Number(userData.Balance || 0).toLocaleString('en-UG', { minimumFractionDigits: 2 });
+            const acct = userData['Account Number'] || userData.AccountNumber || 'N/A';
+            document.getElementById('accountNum').textContent = acct;
+            document.getElementById('acctNumDisplay').textContent = acct;
+            document.getElementById('lastTransaction').textContent = userData.Date || 'N/A';
+
+            if (allEntries && allEntries.length > 0) {
+                let totalDep = 0, totalWith = 0;
+                allEntries.forEach(r => {
+                    totalDep  += parseFloat(r.Deposit  || 0);
+                    totalWith += parseFloat(r.Withdraw || 0);
+                });
+                document.getElementById('totalDeposits').textContent    = 'UGX ' + totalDep.toLocaleString();
+                document.getElementById('totalWithdrawals').textContent = 'UGX ' + totalWith.toLocaleString();
+            }
+        }
+
+        // ===== SCROLL FADE IN =====
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach((e, i) => {
+                if (e.isIntersecting) {
+                    e.target.style.transitionDelay = (i * 0.06) + 's';
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // ===== TOAST =====
+        let toastTimer;
+        function showToast(msg, type = 'info', ms = 3500) {
+            clearTimeout(toastTimer);
+            const el = document.getElementById('toast');
+            el.textContent = msg; el.className = `toast ${type} show`;
+            toastTimer = setTimeout(() => el.classList.remove('show'), ms);
+        }
+
+        // ===== MODAL HELPERS =====
+        function openModal(id) { document.getElementById(id).classList.add('open'); }
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            el.classList.remove('open');
+            // for statement overlay which doesn't use 'open' as flexbox
+            el.style.display = '';
+        }
+        function handleOverlayClick(e, id) {
+            if (e.target === document.getElementById(id)) closeModal(id);
+        }
+
+        function openPasswordModal() {
+            document.getElementById('newPassInput').value = '';
+            document.getElementById('savePassBtn').textContent = 'Save New Password';
+            document.getElementById('savePassBtn').disabled = false;
+            openModal('passwordModal');
+        }
+
+        // ===== STATEMENT =====
+        function showStatement() {
+            const body = document.getElementById('statementBody');
+            if (!allEntries || allEntries.length === 0) {
+                body.innerHTML = '<tr><td colspan="4"><div class="empty-state">📭 No transactions found</div></td></tr>';
+            } else {
+                body.innerHTML = allEntries.map(r => `
+                    <tr>
+                        <td>${r.Date || '—'}</td>
+                        <td class="td-green">${r.Deposit  ? 'UGX ' + Number(r.Deposit).toLocaleString()  : '—'}</td>
+                        <td class="td-red">${r.Withdraw ? 'UGX ' + Number(r.Withdraw).toLocaleString() : '—'}</td>
+                        <td class="td-bold">${r.Balance  ? 'UGX ' + Number(r.Balance).toLocaleString()  : '—'}</td>
+                    </tr>
+                `).join('');
+            }
+            const overlay = document.getElementById('statementModal');
+            overlay.style.display = 'block';
+            setTimeout(() => overlay.style.display = 'block', 0); // animate in
+        }
+
+        // close statement
+        document.getElementById('statementModal').addEventListener('click', function(e) {
+            if (e.target === this) this.style.display = 'none';
+        });
+
+        // ===== WITHDRAW =====
+        function sendWithdrawRequest() {
+            if (!userData) return;
+            const name    = userData.Name || 'Member';
+            const balance = document.getElementById('balanceAmount').textContent;
+            const phone   = "256783372449";
+            const message = encodeURIComponent(`Hello, I'm ${name} (Acct: ${userData['Account Number'] || ''}). I would like to withdraw from my balance of UGX ${balance}.`);
+            window.open(`https://wa.me/${phone}?text=${message}`, '_blank');
+        }
+
+        // ===== PASSWORD UPDATE =====
+        function updatePassword() {
+            const newPass = document.getElementById('newPassInput').value.trim();
+            const btn = document.getElementById('savePassBtn');
+
+            if (!newPass || newPass.length < 4) {
+                showToast('Password must be at least 4 characters.', 'error'); return;
+            }
+
+            btn.textContent = 'Updating…'; btn.disabled = true;
+
+            fetch(SCRIPT_URL, {
+                method: 'POST', mode: 'no-cors', cache: 'no-cache',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'updatePassword',
+                    email: userData.EMAIL || userData.Email || userData.email,
+                    newPassword: newPass
+                })
+            })
+            .then(() => {
+                closeModal('passwordModal');
+                showToast('✓ Password updated! Please log in again.', 'success', 3000);
+                setTimeout(() => { localStorage.clear(); window.location.href = 'index.html'; }, 2500);
+            })
+            .catch(() => {
+                showToast('Network error. Please try again.', 'error');
+                btn.textContent = 'Save New Password'; btn.disabled = false;
+            });
+        }
+
+        // ===== LOGOUT =====
+        function handleLogout() {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.clear();
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
 </body>
 </html>
