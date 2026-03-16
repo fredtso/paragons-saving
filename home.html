@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ParagonsSaving - Home</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#FFD700">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
     <style>
         /* CSS for the body */
         body {
@@ -16,16 +21,60 @@
 
         .container {
             padding: 20px;
+            display:flex;
+            align-items: center;
+            justify-content: space-evenly;
+            flex-direction: column;
+
         }
 
+.user-icon {
+  /* The Outer Yellow Ring */
+  width: 60px;
+  height: 60px;
+  background: rgba(250, 250, 250, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Clips the bottom of the shoulders */
+  margin-left: 10px;
+}
+
+/* The Head */
+.user-icon::before {
+  content: "";
+  position: absolute;
+  top: 9%;
+  width: 25px;
+  height: 25px;
+  background-color: #FFD700;
+  border-radius: 50%;
+}
+
+/* The Shoulders */
+.user-icon::after {
+  content: "";
+  position: absolute;
+  bottom: 10%;
+  width: 40px;
+  height: 25px;
+  background-color: #FFD700;
+  border-radius: 50% 50% 10px 10px; /* Rounded top, flatter bottom */
+}
+
+
         .top-div{display: flex;
-    background: rgba(250, 250, 250, 0.6); /* Dark background */
+    background: rgba(250, 250, 250, 0.6); /* light background */
     backdrop-filter: blur(10px); /* Blurs content behind the bar */
     padding: 10px 20px;
     border-radius: 50px; /* Makes it a pill shape */
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    width: 70%;
+    width: 65%;
     align-items: center;}
 
         /* Header section with top right wrench icon */
@@ -36,19 +85,9 @@
             margin-bottom: 20px;
         }
         /* .header-text { } */
-        .welcome-tag { color: #888; font-size: 16px; margin-bottom: 5px; }
-        .user-name { font-size: 28px; font-weight: bold; margin: 0; }
+        .welcome-tag { color: #888; font-size: 18px; margin-bottom: 3px; }
+        .user-name { font-size: 25px; font-weight: bold; margin: 1px; }
 
-        .header-icon {
-            background-color: #6C63FF; /* Purple from your screenshot */
-            border-radius: 50%;
-            padding: 10px;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
 
         /* Card styles used for all section blocks */
         .card {
@@ -196,14 +235,12 @@
         <header>
             <div class="header-text top-div">
                 <div class="welcome-tag">Welcome back,</div>
-                <h1 class="user-name">Fredfred</h1>
+                <h1 class="user-name">Fred</h1>
             </div>
-          <div id="passwordModal">👤
-    <div class="modal-content">
-        <button onclick="updatePassword()">SAVE</button>
-        <button onclick="closePasswordModal()" style="color: red; background: none; border: none; margin-top: 10px; cursor: pointer;">Cancel</button>
+            <a href="profile.html" style="text-decoration: none;"><div class="user-icon"></div>
+</a>
     </div>
-</div>
+ 
 
         </header>
 
@@ -214,7 +251,7 @@
             <div class="account-details">
                 <div>
                     <div class="account-num-label">Account Number</div>
-                    <div class="account-num">SB841053108</div>
+                    <div class="account-num">1723</div>
                 </div>
                 <div class="status-tag">✓ Active</div>
             </div>
@@ -294,7 +331,7 @@ if (!localStorage.getItem('userData')) {
     if (!latestData) {
         window.location.href = "index.html";
     } else {
-        // Updates based on your specific Sheet headers
+        // Updates based on my specific Sheet headers
         document.querySelector('.user-name').innerText = latestData.Name || "User";
         document.querySelector('.balance-amount').innerText = "ugx" + (latestData.Balance || "0.00");
         
@@ -340,44 +377,7 @@ if (!localStorage.getItem('userData')) {
         modal.style.display = 'block';
     }
 
-   function updatePassword() {
-    const newPassword = document.getElementById('newPassInput').value.trim();
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    const btn = event.target;
-
-    if (!newPassword || newPassword.length < 4) {
-        return alert("Please enter at least 4 characters.");
-    }
-
-    btn.innerText = "Updating...";
-    btn.disabled = true;
-
-    // We send a POST request to your Apps Script
-    fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Essential for Google Apps Script POST requests
-        cache: 'no-cache',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            email: userData.EMAIL || userData.Email || userData.email,
-            newPassword: newPassword
-        })
-    })
-    .then(() => {
-        // Since 'no-cors' doesn't return a readable response, we assume success
-        // if the fetch doesn't throw an error.
-        alert("Password update request sent! Please log in again with your new password.");
-        localStorage.clear();
-        window.location.href = "index.html";
-    })
-    .catch(err => {
-        console.error("Update failed:", err);
-        alert("Something went wrong. Try again.");
-        btn.innerText = "Save Password";
-        btn.disabled = false;
-    });
-}
-
+  
 
 function logOut() {
     // Confirm first so they don't click it by accident
@@ -391,48 +391,6 @@ function logOut() {
 function closePasswordModal() {
     document.getElementById('passwordModal').style.display = 'none';
 }
-
-function updatePassword() {
-    const newPassword = document.getElementById('newPassInput').value.trim();
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    
-    // We target the specific button to show loading status
-    const btn = event.target;
-
-    if (!newPassword || newPassword.length < 4) {
-        return alert("Please enter at least 4 characters.");
-    }
-
-    btn.innerText = "Updating...";
-    btn.disabled = true;
-
-    // We use 'no-cors' because Google Scripts don't play nice with standard JSON POSTs
-    fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors', 
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            email: userData.EMAIL || userData.Email,
-            newPassword: newPassword
-        })
-    })
-    .then(() => {
-        // Since no-cors doesn't let us read the result, we assume success 
-        // if the request actually goes through.
-        alert("Password updated! Please log in again.");
-        localStorage.clear();
-        window.location.href = "index.html";
-    })
-    .catch(err => {
-        console.error(err);
-        alert("Network error. Try again.");
-        btn.innerText = "Save Password";
-        btn.disabled = false;
-    });
-}
-
 
 
 </script>
@@ -453,24 +411,6 @@ function updatePassword() {
         </table>
 </div>
 
-<div id="passwordModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:2000; align-items: center; justify-content: center;">
-    <div style="background: #1e1e1e; width: 90%; max-width: 400px; padding: 30px; border-radius: 20px; border: 1px solid #333; position: relative; margin: auto; top: 20%;">
-        <h2 style="color:white; margin-top: 0;">Update Password</h2>
-        <p style="color: #888; font-size: 14px;">Keep it simple so you don't forget it!</p>
-        
-        <input type="password" id="newPassInput" placeholder="Enter new password" 
-               style="width:100%; padding: 15px; margin: 20px 0; border-radius: 10px; border: 1px solid #333; background: #111; color: white; box-sizing: border-box;">
-        
-        <button onclick="updatePassword()" 
-                style="width: 100%; padding: 15px; background: #FFD700; color: black; border: none; border-radius: 12px; font-weight: bold; cursor: pointer;">
-            Save Password
-        </button>
-        
-        <button onclick="document.getElementById('passwordModal').style.display='none'" 
-                style="width: 100%; padding: 10px; background: none; color: #f44336; border: none; margin-top: 10px; cursor: pointer;">
-            Cancel
-        </button>
-    </div>
 </div>
 
 
