@@ -234,6 +234,32 @@ window.addEventListener('appinstalled', () => {
     installBanner.style.display = 'none';
     console.log('PWA was installed');
 });
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // This event ONLY fires if the manifest and sw.js are valid
+    e.preventDefault();
+    deferredPrompt = e;
+    
+    // Show your custom install button/banner
+    const installBanner = document.getElementById('installBanner');
+    if(installBanner) installBanner.style.display = 'block';
+});
+
+function triggerInstall() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User installed the app');
+            }
+            deferredPrompt = null;
+        });
+    } else {
+        // If the browser hasn't fired the event yet
+        alert("To install: Click the three dots (⋮) in Brave and select 'Install App' or 'Add to Home Screen'.");
+    }
+}
 
     </script>
     <script>
