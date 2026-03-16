@@ -148,20 +148,26 @@
             <input type="password" id="passwordInput" placeholder="Enter password" required>
         </div>
 
-        <button class="signin-btn" id="signInBtn">Sign In</button>
+        <button class="signin-btn" id="signInBtn" onclick="signIn()">Sign In</button>
 
         <div class="signup-text">Wanna look around? <a href="#" class="signup-link">VISIT SITE</a></div>
     </div>
     </div>
-    <script>
-   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwcb118PVBeDk JYa510X4geRgor4WneQYCFaOrGH5U77hfYDuXkM1IfRyp48xmdMFM/exec";
+<script>
+   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-fgY13F8CZBj9veCjCL_C7h0mWlq0w-e695w_DFP9RUy8F8T0yslKvwHUwjlrd43x/exec";
 
 function signIn() {
+    console.log("Login function started"); // Testing if the button works
+    
     const emailInput = document.getElementById('emailInput');
     const passwordInput = document.getElementById('passwordInput');
-    const btn = document.getElementById('signInButton') || document.getElementById('signInBtn');
+    const btn = document.getElementById('signInBtn');
 
-    // 1. Basic Validation
+    if (!emailInput || !passwordInput || !btn) {
+        alert("Check your HTML IDs: emailInput, passwordInput, or signInBtn is missing!");
+        return;
+    }
+
     if (!emailInput.value || !passwordInput.value) {
         alert("Please enter both email and password");
         return;
@@ -170,106 +176,46 @@ function signIn() {
     const email = emailInput.value.trim().toLowerCase();
     const password = passwordInput.value.trim();
 
-    // 2. UI Feedback
     btn.innerText = "Verifying...";
     btn.disabled = true;
 
-    // 3. The Fetch Call
     const finalUrl = `${SCRIPT_URL}?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
 
-    fetch(finalUrl)
-        .then(res => res.json())
-        .then(response => {
-            if (response.success) {
-                // Save user data for the session
-                localStorage.setItem('userData', JSON.stringify(response.latest));
-                localStorage.setItem('allEntries', JSON.stringify(response.allEntries));
-                window.location.href = "home.html";
-            } else {
-                alert(response.message || "Invalid Credentials");
-                btn.innerText = "Sign In";
-                btn.disabled = false;
-            }
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Connection error. Check your internet.");
+   // Change your fetch block to this simplified version
+fetch(finalUrl)
+    .then(response => {
+        if (!response.ok) throw new Error('Network response was not ok');
+        return response.json();
+    })
+    .then(data => {
+        console.log("Success:", data);
+        if (data.success) {
+            localStorage.setItem('userData', JSON.stringify(data.latest));
+            localStorage.setItem('allEntries', JSON.stringify(data.allEntries));
+            window.location.href = "home.html";
+        } else {
+            alert(data.message || "Invalid credentials");
             btn.innerText = "Sign In";
             btn.disabled = false;
-        });
-}
-
-
-    
-     
-        
-let deferredPrompt;
-const installBanner = document.getElementById('installBanner');
-const installBtn = document.getElementById('installBtn');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the mini-infobar from appearing on mobile
-    e.preventDefault();
-    // Stash the event so it can be triggered later.
-    deferredPrompt = e;
-    // Update UI notify the user they can install the PWA
-    installBanner.style.display = 'block';
-
-    installBtn.addEventListener('click', () => {
-        // Hide the banner
-        installBanner.style.display = 'none';
-        // Show the install prompt
-        deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('User accepted the install prompt');
-            } else {
-                console.log('User dismissed the install prompt');
-            }
-            deferredPrompt = null;
-        });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("Connection blocked or failed. See console (F12).");
+        btn.innerText = "Sign In";
+        btn.disabled = false;
     });
-});
 
-// Hide the banner if the app is successfully installed
-window.addEventListener('appinstalled', () => {
-    installBanner.style.display = 'none';
-    console.log('PWA was installed');
-});
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    // This event ONLY fires if the manifest and sw.js are valid
-    e.preventDefault();
-    deferredPrompt = e;
-    
-    // Show your custom install button/banner
-    const installBanner = document.getElementById('installBanner');
-    if(installBanner) installBanner.style.display = 'block';
-});
-
-function triggerInstall() {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-                console.log('User installed the app');
-            }
-            deferredPrompt = null;
-        });
-    } else {
-        // If the browser hasn't fired the event yet
-        alert("To install: Click the three dots (⋮) in Brave and select 'Install App' or 'Add to Home Screen'.");
-    }
 }
 
-    </script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-      .then(() => console.log("Service Worker Registered"));
-  }
+ if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('PWA: Service Worker Registered'))
+      .catch(err => console.log('PWA: Registration Failed', err));
+  });
+}
+
 </script>
 
 

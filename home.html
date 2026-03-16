@@ -230,6 +230,12 @@
     </style>
 </head>
 <body>
+    <div id="pwa-install-banner" style="display: none; background: #FFD700; color: #000; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 999;">
+    <span>Install Paragons App for faster access!</span>
+    <button onclick="installApp()" style="margin-left: 10px; padding: 5px 10px; background: #000; color: #fff; border: none; border-radius: 5px;">Install Now</button>
+    <button onclick="dismissBanner()" style="background: none; border: none; font-size: 18px; margin-left: 10px;">×</button>
+</div>
+
 
     <div class="container">
         <header>
@@ -390,6 +396,38 @@ function logOut() {
 // Function to close the modal
 function closePasswordModal() {
     document.getElementById('passwordModal').style.display = 'none';
+}
+
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the default browser mini-bar from appearing
+    e.preventDefault();
+    // Save the event so it can be triggered later
+    deferredPrompt = e;
+    // Show our custom banner
+    document.getElementById('pwa-install-banner').style.display = 'block';
+});
+
+function installApp() {
+    if (deferredPrompt) {
+        // Show the install prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+            }
+            deferredPrompt = null;
+            document.getElementById('pwa-install-banner').style.display = 'none';
+        });
+    }
+}
+
+function dismissBanner() {
+    document.getElementById('pwa-install-banner').style.display = 'none';
+    // Optional: Save to localStorage so they don't see it every single time
+    localStorage.setItem('pwaDismissed', 'true');
 }
 
 
