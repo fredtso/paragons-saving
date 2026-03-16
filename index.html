@@ -154,70 +154,34 @@
     </div>
     </div>
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwcb1l8PVBeDkJYa51OX4geRgor4WneQYCFaOrGH5U77hfYDuxkM1IfRyp48xmdMFM/exec";
-
-    document.getElementById('signInButton').addEventListener('click', function() {
-    const email = document.getElementById('emailInput').value.trim();
-    const btn = this;
-    const password = document.getElementById('passwordInput').value.trim();
-
-// Update the URL to include &password=
-fetch(`${SCRIPT_URL}?email=${email}&password=${password}`)
-    .then(res => res.json())
-    .then(response => {
-        if (response.success) {
-            localStorage.setItem('userData', JSON.stringify(response.latest));
-            localStorage.setItem('allEntries', JSON.stringify(response.allEntries));
-            window.location.href = "home.html";
-        } else {
-            // Now shows "Incorrect password" or "Email not found"
-            alert(response.message || "Login failed");
-            btn.innerText = "Sign In";
-            btn.disabled = false;
-        }
-    })
-
-    if (!email) return alert("Please enter your email");
-
-    btn.innerText = "Verifying...";
-    btn.disabled = true;
-
-    
-        })
-        .catch(err => {
-            console.error(err);
-            alert("Connection error. Check your internet.");
-            btn.innerText = "Sign In";
-            btn.disabled = false;
-        });
-
-
-    fetch(`${SCRIPT_URL}?email=${email}`, {
-    method: 'GET',
-    mode: 'cors', // Add this
-    redirect: 'follow' //ensure it follows Google's redirect
-})
-
+   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwwcb118PVBeDk JYa510X4geRgor4WneQYCFaOrGH5U77hfYDuXkM1IfRyp48xmdMFM/exec";
 
 function signIn() {
-    const email = document.getElementById('emailInput').value.trim().toLowerCase();
-    const password = document.getElementById('passwordInput').value.trim(); // Get the password!
-    const btn = document.getElementById('signInButton');
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const btn = document.getElementById('signInButton') || document.getElementById('signInBtn');
 
-    if (!email || !password) {
+    // 1. Basic Validation
+    if (!emailInput.value || !passwordInput.value) {
         alert("Please enter both email and password");
         return;
     }
 
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value.trim();
+
+    // 2. UI Feedback
     btn.innerText = "Verifying...";
     btn.disabled = true;
 
-    // We add &password= to the end of the URL
-    fetch(`${SCRIPT_URL}?email=${email}&password=${password}`)
+    // 3. The Fetch Call
+    const finalUrl = `${SCRIPT_URL}?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+
+    fetch(finalUrl)
         .then(res => res.json())
         .then(response => {
             if (response.success) {
-                // Save the data and move to home
+                // Save user data for the session
                 localStorage.setItem('userData', JSON.stringify(response.latest));
                 localStorage.setItem('allEntries', JSON.stringify(response.allEntries));
                 window.location.href = "home.html";
@@ -236,11 +200,8 @@ function signIn() {
 }
 
 
-
-
-
-
-
+    
+     
         
 let deferredPrompt;
 const installBanner = document.getElementById('installBanner');
