@@ -177,8 +177,6 @@ fetch(`${SCRIPT_URL}?email=${email}&password=${password}`)
         }
     })
 
-
-
     if (!email) return alert("Please enter your email");
 
     btn.innerText = "Verifying...";
@@ -200,6 +198,50 @@ fetch(`${SCRIPT_URL}?email=${email}&password=${password}`)
     redirect: 'follow' //ensure it follows Google's redirect
 })
 
+
+function signIn() {
+    const email = document.getElementById('emailInput').value.trim().toLowerCase();
+    const password = document.getElementById('passwordInput').value.trim(); // Get the password!
+    const btn = document.getElementById('signInBtn');
+
+    if (!email || !password) {
+        alert("Please enter both email and password");
+        return;
+    }
+
+    btn.innerText = "Verifying...";
+    btn.disabled = true;
+
+    // We add &password= to the end of the URL
+    fetch(`${SCRIPT_URL}?email=${email}&password=${password}`)
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                // Save the data and move to home
+                localStorage.setItem('userData', JSON.stringify(response.latest));
+                localStorage.setItem('allEntries', JSON.stringify(response.allEntries));
+                window.location.href = "home.html";
+            } else {
+                alert(response.message || "Invalid Credentials");
+                btn.innerText = "Sign In";
+                btn.disabled = false;
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Connection error. Check your internet.");
+            btn.innerText = "Sign In";
+            btn.disabled = false;
+        });
+}
+
+
+
+
+
+
+
+        
 let deferredPrompt;
 const installBanner = document.getElementById('installBanner');
 const installBtn = document.getElementById('installBtn');
