@@ -202,7 +202,7 @@ fetch(`${SCRIPT_URL}?email=${email}&password=${password}`)
 function signIn() {
     const email = document.getElementById('emailInput').value.trim().toLowerCase();
     const password = document.getElementById('passwordInput').value.trim(); // Get the password!
-    const btn = document.getElementById('signInBtn');
+    const btn = document.getElementById('signInButton');
 
     if (!email || !password) {
         alert("Please enter both email and password");
